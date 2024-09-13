@@ -7,17 +7,17 @@
 // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     #if canImport(SwiftFoundation) && !DEPLOYMENT_RUNTIME_OBJC
         @testable import SwiftFoundation
     #else
-        @testable import Foundation
+        import Foundation
     #endif
 #endif
 
 class TestProgressFraction : XCTestCase {
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT    // _ProgressFraction is an internal type
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)    // _ProgressFraction is an internal type
 
     func test_equal() {
         let f1 = _ProgressFraction(completed: 5, total: 10)

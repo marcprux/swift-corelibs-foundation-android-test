@@ -7,12 +7,12 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     #if canImport(SwiftFoundationNetworking) && !DEPLOYMENT_RUNTIME_OBJC
     @testable import SwiftFoundationNetworking
     #else
         #if canImport(FoundationNetworking)
-        @testable import FoundationNetworking
+        import FoundationNetworking
         #endif
     #endif
 #endif
@@ -40,7 +40,7 @@ class TestURLProtectionSpace : XCTestCase {
         XCTAssert(space.description.hasSuffix(": Host:apple.com, Server:http, Auth-Scheme:NSURLAuthenticationMethodHTMLForm, Realm:(null), Port:80, Proxy:NO, Proxy-Type:(null)"))
     }
 
-    #if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+    #if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     func test_createWithHTTPURLresponse() throws {
         // Real responce from outlook.office365.com
         let headerFields1 = [

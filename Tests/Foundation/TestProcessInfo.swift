@@ -7,11 +7,11 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     #if canImport(SwiftFoundation) && !DEPLOYMENT_RUNTIME_OBJC
         @testable import SwiftFoundation
     #else
-        @testable import Foundation
+        import Foundation
     #endif
 #endif
 
@@ -63,7 +63,7 @@ class TestProcessInfo : XCTestCase {
         let uuid = ProcessInfo.processInfo.globallyUniqueString
         
         let parts = uuid.components(separatedBy: "-")
-        XCTAssertEqual(parts.count, 7)
+        XCTAssertEqual(parts.count, isAndroid ? 5 : 7)
         XCTAssertEqual(parts[0].utf16.count, 8)
         XCTAssertEqual(parts[1].utf16.count, 4)
         XCTAssertEqual(parts[2].utf16.count, 4)

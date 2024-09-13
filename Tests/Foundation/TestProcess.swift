@@ -7,10 +7,13 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
+#if canImport(Synchronization)
 import Synchronization
+#endif
 
 class TestProcess : XCTestCase {
-    
+#if !os(Android) // some tests here crash on Android
+
     func test_exit0() throws {
         let process = Process()
         let executableURL = try xdgTestHelperURL()
@@ -187,6 +190,10 @@ class TestProcess : XCTestCase {
     }
 
     func test_file_stdout() throws {
+        #if os(Android)
+        throw XCTSkip("test_file_stdout disabled for Android")
+        #endif
+
         let process = Process()
 
         process.executableURL = try xdgTestHelperURL()
@@ -372,6 +379,8 @@ class TestProcess : XCTestCase {
     func test_interrupt() throws {
         #if os(Windows)
         throw XCTSkip("Windows does not have signals")
+        #elseif os(Android)
+        throw XCTSkip("test_interrupt disabled for Android")
         #else
         let helper = try _SignalHelperRunner()
         do {
@@ -483,6 +492,9 @@ class TestProcess : XCTestCase {
 
 
     func test_redirect_stdin_using_null() throws {
+        #if os(Android)
+        throw XCTSkip("test_redirect_stdin_using_null not supported on Android")
+        #endif
         let task = Process()
         task.executableURL = try xdgTestHelperURL()
         task.arguments = ["--cat"]
@@ -549,6 +561,8 @@ class TestProcess : XCTestCase {
         #if os(Windows)
         // See explanation in xdgTestHelperURL() as to why this is unsupported
         throw XCTSkip("Running plutil as part of unit tests is not supported on Windows")
+        #elseif os(Android)
+        throw XCTSkip("Running plutil as part of unit tests is not supported on Android")
         #else
         let task = Process()
 
@@ -582,6 +596,9 @@ class TestProcess : XCTestCase {
 
     @available(*, deprecated) // test of deprecated API, suppress deprecation warning
     func test_currentDirectory() throws {
+        #if os(Android)
+        throw XCTSkip("test_currentDirectory disabled for Android")
+        #endif
 
         let process = Process()
         XCTAssertNil(process.executableURL)
@@ -822,6 +839,7 @@ class TestProcess : XCTestCase {
         let parentPgrp = Int(getpgrp())
         XCTAssertNotEqual(parentPgrp, childPgrp, "Child process group \(parentPgrp) should not equal parent process group \(childPgrp)")
     }
+#endif
 #endif
 }
 

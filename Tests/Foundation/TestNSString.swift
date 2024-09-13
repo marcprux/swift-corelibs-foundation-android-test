@@ -1049,6 +1049,8 @@ class TestNSString: LoopbackServerTest {
           	// next assert fails in VirtualBox because home directory for unknown user resolved to /var/run/vboxadd
             #if os(Windows)
             XCTAssertEqual(result, ProcessInfo.processInfo.environment["ALLUSERSPROFILE"])
+            #elseif os(Android)
+            XCTAssertEqual(result + "/", path as String)
             #else
             XCTAssertEqual(result, "/var/empty", "Return copy of receiver if home directory could not be resolved.")
             #endif

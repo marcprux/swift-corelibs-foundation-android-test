@@ -8,17 +8,17 @@
 //
 
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     #if canImport(SwiftFoundation) && !DEPLOYMENT_RUNTIME_OBJC
         @testable import SwiftFoundation
     #else
-        @testable import Foundation
+        import Foundation
     #endif
 #endif
 
 
 class TestPipe: XCTestCase {
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     func test_MaxPipes() {
         // Try and create enough pipes to exhaust the process's limits. 1024 is a reasonable
         // hard limit for the test. This is reached when testing on Linux (at around 488 pipes)

@@ -42,3 +42,39 @@ func ensureFiles(_ fileNames: [String]) -> Bool {
     }
     return result
 }
+
+// Manually implement Mutex for Android, since we don't have Synchronization
+
+class Mutex<T> {
+    var value: T
+    private let lock = NSLock()
+
+    init(_ value: T) {
+        self.value = value
+    }
+
+    public func withLock<R>(_ body: (inout T) throws -> R) rethrows -> R {
+        try lock.withLock {
+            try body(&value)
+        }
+    }
+}
+
+extension NSLocking {
+    @_alwaysEmitIntoClient
+    @_disfavoredOverload
+    public func withLock<R>(_ body: () throws -> R) rethrows -> R {
+        self.lock()
+        defer {
+            self.unlock()
+        }
+
+        return try body()
+    }
+}
+
+#if os(Android)
+let isAndroid = true
+#else
+let isAndroid = false
+#endif

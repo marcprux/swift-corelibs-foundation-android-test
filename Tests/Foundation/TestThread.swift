@@ -7,11 +7,11 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
     #if canImport(SwiftFoundation) && !DEPLOYMENT_RUNTIME_OBJC
         @testable import SwiftFoundation
     #else
-        @testable import Foundation
+        import Foundation
     #endif
 #endif
 
@@ -44,7 +44,7 @@ class TestThread : XCTestCase {
     func test_threadName() {
 
         func testInternalThreadName(_ name: String?) {
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
             XCTAssertEqual(Thread.current._name, name)
 #endif
         }

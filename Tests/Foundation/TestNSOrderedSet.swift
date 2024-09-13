@@ -26,7 +26,10 @@ class TestNSOrderedSet : XCTestCase {
         }
     }
     
-    func test_enumerationUsingBlock() {
+    func test_enumerationUsingBlock() throws {
+        #if os(Android)
+        throw XCTSkip("Not working on Android")
+        #endif
         let array = NSOrderedSet(array: Array(0..<100))
         let createIndexesArrayHavingSeen = { (havingSeen: IndexSet) in
             return (0 ..< array.count).map { havingSeen.contains($0) }

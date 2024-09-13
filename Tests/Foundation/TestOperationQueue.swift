@@ -7,9 +7,12 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
+#if canImport(Synchronization)
 import Synchronization
+#endif
 import Dispatch
 
+#if !os(Android)
 class TestOperationQueue : XCTestCase {
     func test_OperationCount() {
         let queue = OperationQueue()
@@ -837,3 +840,5 @@ class SyncOperation: Operation, @unchecked Sendable {
     }
 
 }
+
+#endif

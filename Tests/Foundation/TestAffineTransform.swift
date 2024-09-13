@@ -233,7 +233,9 @@ extension TestAffineTransform {
         
         XCTAssertEqual(AffineTransform(), identity)
         XCTAssertEqual(AffineTransform.identity, identity)
+        #if !os(Android)
         XCTAssertEqual(NSAffineTransform().affineTransform, identity)
+        #endif
     }
     
     func testIdentity() {
@@ -267,7 +269,9 @@ extension TestAffineTransform {
         }()
         
         XCTAssertEqual(translatedIdentity, translation)
+        #if !os(Android)
         XCTAssertEqual(nsTranslation.affineTransform, translation)
+        #endif
     }
     
     func testTranslation() {
@@ -338,8 +342,10 @@ extension TestAffineTransform {
         }()
         
         XCTAssertEqual(scaledIdentity, scaling)
+        #if !os(Android)
         XCTAssertEqual(nsScaling.affineTransform, scaling)
-        
+        #endif
+
         // Same x/y Components
         
         let differentScaledIdentity = AffineTransform(
@@ -365,7 +371,9 @@ extension TestAffineTransform {
         XCTAssertEqual(sameScaling, differentScaledIdentity)
         
         XCTAssertEqual(sameScaledIdentity, sameScaling)
+        #if !os(Android)
         XCTAssertEqual(sameNSScaling.affineTransform, sameScaling)
+        #endif
     }
 
     func testScaling() {

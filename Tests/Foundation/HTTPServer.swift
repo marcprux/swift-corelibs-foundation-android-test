@@ -1082,8 +1082,13 @@ struct ServerError : Error {
 
 extension ServerError : CustomStringConvertible {
     var description: String {
+        #if os(Android)
+        let s = String(cString: strerror(errno)) ?? ""
+        return "\(operation) failed: \(s) (\(_code))"
+        #else
         let s = String(validatingCString: strerror(errno)) ?? ""
         return "\(operation) failed: \(s) (\(_code))"
+        #endif
     }
 }
 

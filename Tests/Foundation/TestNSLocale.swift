@@ -101,7 +101,7 @@ class TestNSLocale : XCTestCase {
     }
 
     @available(*, deprecated) // test of deprecated API, suppress deprecation warning
-    func test_staticProperties() {
+    func test_staticProperties() throws {
         let euroCurrencyCode = "EUR"
         let spainRegionCode = "ES"
         let galicianLanguageCode = "gl"
@@ -125,6 +125,9 @@ class TestNSLocale : XCTestCase {
         let preferredLanguages = UserDefaults.standard.array(forKey: "AppleLanguages")
         // If there are no preferred languages, we provide a backstop value of English
         let preferredLanguagesCount = preferredLanguages?.count ?? 1
+        #if os(Android)
+        throw XCTSkip("Locale.preferredLanguages returns zero on Android")
+        #endif
         XCTAssertEqual(Locale.preferredLanguages.count, preferredLanguagesCount)
     }
     

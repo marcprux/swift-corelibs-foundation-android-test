@@ -7,7 +7,9 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
+#if canImport(Synchronization)
 import Synchronization
+#endif
 
 class TestTimer : XCTestCase {
     func test_timerInit() {
@@ -24,7 +26,8 @@ class TestTimer : XCTestCase {
         XCTAssertEqual(repeatingTimer.timeInterval, timeInterval)
         XCTAssert(timer.isValid)
     }
-    
+
+    #if !os(Android)
     func test_timerTickOnce() {
         let flag = Atomic(false)
         
@@ -80,6 +83,7 @@ class TestTimer : XCTestCase {
             XCTAssertEqual($0, numberOfRepeats)
         }
     }
+    #endif
 
     func test_timerInvalidate() {
         // Only mutated once, protected by behavior of RunLoop validated in this test

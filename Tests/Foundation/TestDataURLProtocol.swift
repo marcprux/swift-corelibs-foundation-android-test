@@ -7,7 +7,9 @@
 // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
+#if canImport(Synchronization)
 import Synchronization
+#endif
 
 final class DataURLTestDelegate: NSObject, URLSessionTaskDelegate, URLSessionDataDelegate, Sendable {
 

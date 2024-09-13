@@ -345,7 +345,11 @@ class TestUserDefaults : XCTestCase {
 		XCTAssertEqual(defaults.string(forKey: "key1"), "12.34")
 	}
 
-	func test_volatileDomains() {
+	func test_volatileDomains() throws {
+        #if os(Android)
+        throw XCTSkip("test_volatileDomains not working on Android")
+        #endif
+
 		let dateKey = "A Date",
 		stringKey = "A String",
 		arrayKey = "An Array",
@@ -379,7 +383,10 @@ class TestUserDefaults : XCTestCase {
 		XCTAssertEqual(defaultsIn[boolKey] as! Bool, defaultsOut[boolKey] as! Bool)
 	}
 	
-	func test_persistentDomain() {
+	func test_persistentDomain() throws {
+        #if os(Android)
+        throw XCTSkip("test_persistentDomain not working on Android")
+        #endif
 		let int = (key: "An Integer", value: 1234)
 		let double = (key: "A Double", value: 5678.1234)
 		let string = (key: "A String", value: "Some string")

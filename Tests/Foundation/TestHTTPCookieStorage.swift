@@ -309,7 +309,7 @@ class TestHTTPCookieStorage: XCTestCase {
     }
 
     func test_cookieInXDGSpecPath() throws {
-#if !os(Android) && !DARWIN_COMPATIBILITY_TESTS && !os(Windows)// No XDG on native Foundation
+#if !os(Android) && !DARWIN_COMPATIBILITY_TESTS && !os(Windows) && !os(Android) // No XDG on native Foundation
         //Test without setting the environment variable
         let testCookie = HTTPCookie(properties: [
            .name: "TestCookie0",

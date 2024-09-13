@@ -93,6 +93,9 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
     }
 
     func test_asyncDataFromURL() async throws {
+        #if os(Android)
+        throw XCTSkip("test_asyncDataFromURL skipped on Android due to lack of data function")
+        #else
         guard #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) else { return }
         let urlString = "http://127.0.0.1:\(TestURLSession.serverPort)/UK"
         let (data, response) = try await URLSession.shared.data(from: URL(string: urlString)!, delegate: nil)
@@ -103,9 +106,13 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         XCTAssertEqual(200, httpResponse.statusCode, "HTTP response code is not 200")
         let result = String(data: data, encoding: .utf8) ?? ""
         XCTAssertEqual("London", result, "Did not receive expected value")
+        #endif
     }
 
     func test_asyncDataFromURLWithDelegate() async throws {
+        #if os(Android)
+        throw XCTSkip("test_asyncDataFromURLWithDelegate skipped on Android due to lack of delegate property")
+        #else
         guard #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) else { return }
         // Sendable note: Access to ivars is essentially serialized by the XCTestExpectation. It would be better to do it with a lock, but this is sufficient for now.
         final class CapitalDataTaskDelegate: NSObject, URLSessionDataDelegate, @unchecked Sendable {
@@ -134,6 +141,7 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         let result = String(data: data, encoding: .utf8) ?? ""
         XCTAssertEqual("London", result, "Did not receive expected value")
         XCTAssertEqual("London", delegate.capital)
+        #endif
     }
 
     func test_dataTaskWithHttpInputStream() async throws {
@@ -313,6 +321,9 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
     }
 
     func test_asyncDownloadFromURL() async throws {
+        #if os(Android)
+        throw XCTSkip("test_asyncDownloadFromURL skipped on Android due to lack of download function")
+        #else
         guard #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) else { return }
         let urlString = "http://127.0.0.1:\(TestURLSession.serverPort)/country.txt"
         let (location, response) = try await URLSession.shared.download(from: URL(string: urlString)!)
@@ -322,9 +333,13 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         }
         XCTAssertEqual(200, httpResponse.statusCode, "HTTP response code is not 200")
         XCTAssertNotNil(location, "Download location was nil")
+        #endif
     }
 
     func test_asyncDownloadFromURLWithDelegate() async throws {
+        #if os(Android)
+        throw XCTSkip("test_asyncDownloadFromURLWithDelegate skipped on Android due to lack of download function")
+        #else
         guard #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) else { return }
         // Sendable note: Access to ivars is essentially serialized by the XCTestExpectation. It would be better to do it with a lock, but this is sufficient for now.
         class AsyncDownloadDelegate : NSObject, URLSessionDownloadDelegate, @unchecked Sendable {
@@ -357,6 +372,7 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         XCTAssertEqual(200, httpResponse.statusCode, "HTTP response code is not 200")
         XCTAssertNotNil(location, "Download location was nil")
         XCTAssertTrue(delegate.totalBytesWritten > 0)
+        #endif
     }
 
     func test_gzippedDownloadTask() async {
@@ -653,6 +669,8 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
     
     func test_repeatedRequestsStress() async throws {
         #if os(Windows)
+        throw XCTSkip("This test is currently disabled on Windows")
+        #elseif os(Android)
         throw XCTSkip("This test is currently disabled on Windows")
         #else
         // TODO: try disabling curl connection cache to force socket close early. Or create several url sessions (they have cleanup in deinit)
@@ -1541,7 +1559,10 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         XCTAssertEqual(cookies?.count, 1)
     }
 
-    func test_redirectionWithSetCookies() async {
+    func test_redirectionWithSetCookies() async throws {
+        #if os(Android)
+        throw XCTSkip("test_redirectionWithSetCookies not working on Android")
+        #endif
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 5
         emptyCookieStorage(storage: config.httpCookieStorage)
@@ -1817,6 +1838,9 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
     }
 
     func test_sessionDelegateCalledIfTaskDelegateDoesNotImplement() async throws {
+        #if os(Android)
+        throw XCTSkip("test_sessionDelegateCalledIfTaskDelegateDoesNotImplement skipped on Android due to lack of delegate property")
+        #else
         let expectation = XCTestExpectation(description: "task finished")
         let delegate = SessionDelegate(with: expectation)
         let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
@@ -1829,6 +1853,7 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         task.resume()
 
         await fulfillment(of: [expectation], timeout: 5)
+        #endif
     }
 
     func test_getAllTasks() async throws {

@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,6 +14,8 @@ let platformsWithThreads: [Platform] = [
     .linux,
     .windows,
 ]
+
+let platformsExceptAndroid = platformsWithThreads.filter({ $0 != .android })
 
 var dispatchIncludeFlags: [CSetting] = []
 if let environmentPath = Context.environment["DISPATCH_INCLUDE_PATH"] {
@@ -143,7 +145,7 @@ let interfaceBuildSettings: [CSetting] = [
 let swiftBuildSettings: [SwiftSetting] = [
     .define("DEPLOYMENT_RUNTIME_SWIFT"),
     .define("SWIFT_CORELIBS_FOUNDATION_HAS_THREADS"),
-    .swiftLanguageMode(.v6),
+//    .swiftLanguageMode(.v6),
     .unsafeFlags([
         "-Xfrontend",
         "-require-explicit-sendable",
@@ -183,15 +185,18 @@ if let useLocalDepsEnv = Context.environment["SWIFTCI_USE_LOCAL_DEPS"] {
 let package = Package(
     name: "swift-corelibs-foundation",
     // Deployment target note: This package only builds for non-Darwin targets.
-    platforms: [.macOS("99.9")],
+    //platforms: [.macOS("99.9")],
     products: [
+        /*
         .library(name: "Foundation", targets: ["Foundation"]),
         .library(name: "FoundationXML", targets: ["FoundationXML"]),
         .library(name: "FoundationNetworking", targets: ["FoundationNetworking"]),
         .executable(name: "plutil", targets: ["plutil"]),
+         */
     ],
     dependencies: dependencies,
     targets: [
+        /*
         .target(
             name: "Foundation",
             dependencies: [
@@ -309,20 +314,24 @@ let package = Package(
                 "CMakeLists.txt"
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+//                .swiftLanguageMode(.v6)
             ]
         ),
+         */
         .executableTarget(
             name: "xdgTestHelper",
             dependencies: [
+                /*
                 "Foundation",
                 "FoundationXML",
                 "FoundationNetworking"
+                 */
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+//                .swiftLanguageMode(.v6)
             ]
         ),
+        /*
             // swift-corelibs-foundation has a copy of XCTest's sources so:
             // (1) we do not depend on the toolchain's XCTest, which depends on toolchain's Foundation, which we cannot pull in at the same time as a Foundation package
             // (2) we do not depend on a swift-corelibs-xctest Swift package, which depends on Foundation, which causes a circular dependency in swiftpm
@@ -335,6 +344,7 @@ let package = Package(
             ],
             path: "Sources/XCTest"
         ),
+         */
         .target(
             name: "Testing",
             dependencies: [],
@@ -343,19 +353,21 @@ let package = Package(
         .testTarget(
             name: "TestFoundation",
             dependencies: [
+                /*
                 "Foundation",
                 "FoundationXML",
                 "FoundationNetworking",
                 "XCTest",
+                 */
                 "Testing",
-                .target(name: "xdgTestHelper", condition: .when(platforms: [.linux]))
+                .target(name: "xdgTestHelper", condition: .when(platforms: [.linux, .android]))
             ],
             resources: [
                 .copy("Foundation/Resources")
             ],
             swiftSettings: [
-                .define("NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT"),
-                .swiftLanguageMode(.v6)
+                .define("NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT", .when(platforms: platformsExceptAndroid)),
+//                .swiftLanguageMode(.v6)
             ]
         ),
     ]

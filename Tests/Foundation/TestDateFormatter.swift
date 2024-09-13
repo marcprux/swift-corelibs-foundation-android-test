@@ -279,7 +279,7 @@ class TestDateFormatter: XCTestCase {
         let f = DateFormatter()
         f.locale = Locale(identifier: DEFAULT_LOCALE)
         f.timeZone = TimeZone(abbreviation: DEFAULT_TIMEZONE)
-        
+
         let formats: [String: (DateFormatter.Style, DateFormatter.Style)] = [
             "": (.none, .none),
             "h:mm a": (.none, .short),
@@ -292,10 +292,10 @@ class TestDateFormatter: XCTestCase {
             "M/d/yy, h:mm:ss a z": (.short, .long),
             "M/d/yy, h:mm:ss a zzzz": (.short, .full),
             "MMM d, y": (.medium, .none),
-            "MMM d, y 'at' h:mm a": (.medium, .short),
-            "MMM d, y 'at' h:mm:ss a": (.medium, .medium),
-            "MMM d, y 'at' h:mm:ss a z": (.medium, .long),
-            "MMM d, y 'at' h:mm:ss a zzzz": (.medium, .full),
+            isAndroid ? "MMM d, y, h:mm a" : "MMM d, y 'at' h:mm a": (.medium, .short),
+            isAndroid ? "MMM d, y, h:mm:ss a" : "MMM d, y 'at' h:mm:ss a": (.medium, .medium),
+            isAndroid ? "MMM d, y, h:mm:ss a z" : "MMM d, y 'at' h:mm:ss a z": (.medium, .long),
+            isAndroid ? "MMM d, y, h:mm:ss a zzzz" : "MMM d, y 'at' h:mm:ss a zzzz": (.medium, .full),
             "MMMM d, y": (.long, .none),
             "MMMM d, y 'at' h:mm a": (.long, .short),
             "MMMM d, y 'at' h:mm:ss a": (.long, .medium),
@@ -361,7 +361,11 @@ class TestDateFormatter: XCTestCase {
         XCTAssertEqual(f.timeZone, losAngeles)
     }
 
-    func test_expectedTimeZone() {
+    func test_expectedTimeZone() throws {
+        #if os(Android)
+        throw XCTSkip("Android doesn't support DST correctly")
+        #endif
+
         let newYork = TimeZone(identifier: "America/New_York")!
         let losAngeles = TimeZone(identifier: "America/Los_Angeles")!
 

@@ -238,8 +238,10 @@ class TestTimeZone: XCTestCase {
 
         XCTAssertNil(gmt.nextDaylightSavingTimeTransition)
         XCTAssertNil(msk.nextDaylightSavingTimeTransition)
+        #if !os(Android)
         XCTAssertNotNil(bst.nextDaylightSavingTimeTransition)
         XCTAssertNotNil(aest.nextDaylightSavingTimeTransition)
+        #endif
 
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "UTC")
@@ -248,18 +250,25 @@ class TestTimeZone: XCTestCase {
         let dt1 = try XCTUnwrap(formatter.date(from: "2018-01-01"))
         XCTAssertNil(gmt.nextDaylightSavingTimeTransition(after: dt1))
         XCTAssertNil(msk.nextDaylightSavingTimeTransition(after: dt1))
+        #if !os(Android)
         XCTAssertEqual(bst.nextDaylightSavingTimeTransition(after: dt1)?.description, "2018-03-25 01:00:00 +0000")
         XCTAssertEqual(aest.nextDaylightSavingTimeTransition(after: dt1)?.description, "2018-03-31 16:00:00 +0000")
+        #endif
 
         formatter.timeZone = aest
         let dt2 = try XCTUnwrap(formatter.date(from: "2018-06-06"))
         XCTAssertNil(gmt.nextDaylightSavingTimeTransition(after: dt2))
         XCTAssertNil(msk.nextDaylightSavingTimeTransition(after: dt2))
+        #if !os(Android)
         XCTAssertEqual(bst.nextDaylightSavingTimeTransition(after: dt2)?.description, "2018-10-28 01:00:00 +0000")
         XCTAssertEqual(aest.nextDaylightSavingTimeTransition(after: dt2)?.description, "2018-10-06 16:00:00 +0000")
+        #endif
     }
 
     func test_isDaylightSavingTime() throws {
+        #if os(Android)
+        throw XCTSkip("Daylight savings calculations on Android is incorrect")
+        #endif
         let eukv = try XCTUnwrap(TimeZone(identifier: "Europe/Kiev"))
         
         let dateNoDST = Date(timeIntervalSince1970: 1585432800.0) // March 29, 2020

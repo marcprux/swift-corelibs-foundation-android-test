@@ -43,6 +43,10 @@ internal func testBundleName() -> String {
 }
 
 internal func xdgTestHelperURL() throws -> URL {
+    #if os(Android)
+    throw XCTSkip("xdgTestHelper not yet supported on Android")
+    #endif
+
     #if os(Windows)
     // Adding the xdgTestHelper as a dependency of TestFoundation causes its object files (including the main function) to be linked into the test runner executable as well
     // While this works on Linux due to special linker functionality, this doesn't work on Windows and results in a collision between the two main symbols

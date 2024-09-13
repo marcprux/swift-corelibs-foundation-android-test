@@ -9,7 +9,9 @@
 
 #if !os(Windows)
 
+#if canImport(Synchronization)
 import Synchronization
+#endif
 
 class TestURLSessionFTP : LoopbackFTPServerTest {
     let saveString = """

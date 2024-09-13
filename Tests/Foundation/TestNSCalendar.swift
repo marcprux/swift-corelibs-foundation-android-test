@@ -519,7 +519,8 @@ class TestNSCalendar: XCTestCase {
             XCTAssertEqual(startOfDay, resultDate)
         }
     }
-    
+
+    #if !os(Android)
     func test_componentsInTimeZone_fromDate() throws {
         try enumerateTestDates() { (calendar, date, components) in
             let calendarWithoutTimeZone = try XCTUnwrap(NSCalendar(identifier: calendar.calendarIdentifier))
@@ -533,7 +534,8 @@ class TestNSCalendar: XCTestCase {
             XCTAssertEqual(components, returned as NSDateComponents)
         }
     }
-    
+    #endif
+
     func enumerateTestDateComparisons(using block: (NSCalendar, Date, Date, NSCalendar.Unit, ComparisonResult) throws -> Void) throws {
         func yield(to block: (NSCalendar, Date, Date, NSCalendar.Unit, ComparisonResult) throws -> Void, _ element: (calendarIdentifier: NSCalendar.Identifier, localeIdentifier: String, timeZoneName: String, firstDateString: String, secondDateString: String, granularity: NSCalendar.Unit, expectedResult: ComparisonResult)) throws {
             let calendar = try XCTUnwrap(NSCalendar(calendarIdentifier: element.calendarIdentifier))

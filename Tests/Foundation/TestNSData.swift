@@ -8,7 +8,7 @@
 //
 
 import XCTest
-@testable import Foundation
+import Foundation
 
 class TestNSData: XCTestCase {
     
@@ -203,7 +203,7 @@ class TestNSData: XCTestCase {
 #endif
 
     func test_writeToURLPermissions() {
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows)
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows) && !os(Android)
         withUmask(0) {
             do {
                 let data = Data()
@@ -226,7 +226,7 @@ class TestNSData: XCTestCase {
     }
 
     func test_writeToURLPermissionsWithAtomic() {
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows)
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows) && !os(Android)
         withUmask(0) {
             do {
                 let data = Data()
@@ -248,7 +248,10 @@ class TestNSData: XCTestCase {
 #endif
     }
 
-    func test_writeToURLSpecialFile() {
+    func test_writeToURLSpecialFile() throws {
+        #if os(Android)
+        throw XCTSkip("Unable to write to special file on Android")
+        #endif
 #if os(Windows)
         let url = URL(fileURLWithPath: "CON")
 #else

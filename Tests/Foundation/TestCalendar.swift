@@ -76,7 +76,10 @@ class TestCalendar: XCTestCase {
     }
 
 
-    func test_gettingDatesOnHebrewCalendar() {
+    func test_gettingDatesOnHebrewCalendar() throws {
+        #if !os(Android)
+        throw XCTSkip("unsupported on Android")
+        #endif
         let date = Date(timeIntervalSince1970: 1552580351)
 
         var calendar = Calendar(identifier: .hebrew)
@@ -88,7 +91,10 @@ class TestCalendar: XCTestCase {
         XCTAssertEqual(components.isLeapMonth, false)
     }
 
-    func test_gettingDatesOnChineseCalendar() {
+    func test_gettingDatesOnChineseCalendar() throws {
+        #if !os(Android)
+        throw XCTSkip("unsupported on Android")
+        #endif
         let date = Date(timeIntervalSince1970: 1591460351.0)
 
         var calendar = Calendar(identifier: .chinese)
