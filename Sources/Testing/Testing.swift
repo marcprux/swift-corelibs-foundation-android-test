@@ -9,6 +9,10 @@
 
 #if canImport(Glibc)
 import Glibc
+#elseif canImport(Bionic)
+import Bionic
+#elseif canImport(Darwin)
+import Darwin
 #elseif canImport(Musl)
 import Musl
 #elseif os(WASI)

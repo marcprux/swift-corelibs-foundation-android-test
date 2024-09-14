@@ -445,7 +445,7 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         d.cancelExpectation = expectation(description: "GET \(urlString): task canceled")
         d.run(with: urlRequest)
         d.cancel()
-        waitForExpectations(timeout: 12)
+        waitForExpectations(timeout: isAndroid ? 30 : 12) // Android emulator can be slow
     }
 
     func test_unhandledURLProtocol() async {
