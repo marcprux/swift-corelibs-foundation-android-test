@@ -203,7 +203,7 @@ class TestNSData: XCTestCase {
 #endif
 
     func test_writeToURLPermissions() {
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows) && !os(Android)
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows)
         withUmask(0) {
             do {
                 let data = Data()
@@ -226,7 +226,7 @@ class TestNSData: XCTestCase {
     }
 
     func test_writeToURLPermissionsWithAtomic() {
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows) && !os(Android)
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Windows)
         withUmask(0) {
             do {
                 let data = Data()

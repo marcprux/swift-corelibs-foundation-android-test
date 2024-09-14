@@ -7,11 +7,11 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
     #if canImport(SwiftFoundation) && !DEPLOYMENT_RUNTIME_OBJC
         @testable import SwiftFoundation
     #else
-        import Foundation
+        @testable import Foundation
     #endif
 #endif
 
@@ -48,7 +48,7 @@ class TestObjCRuntime: XCTestCase {
         XCTAssertNil(NSClassFromString("SwiftEnum"));
     }
     
-    #if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
+    #if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
     func testClassesRenamedByAPINotes() throws {
         for entry in _NSClassesRenamedByObjCAPINotes {
             XCTAssert(try XCTUnwrap(NSClassFromString(NSStringFromClass(entry.class))) === entry.class)

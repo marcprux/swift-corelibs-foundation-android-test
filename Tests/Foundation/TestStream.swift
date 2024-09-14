@@ -7,11 +7,11 @@
 // See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT
     #if canImport(SwiftFoundation) && !DEPLOYMENT_RUNTIME_OBJC
         @testable import SwiftFoundation
     #else
-        import Foundation
+        @testable import Foundation
     #endif
 #endif
 
@@ -126,7 +126,7 @@ class TestStream : XCTestCase {
         XCTAssertEqual(.error, fileStream.streamStatus)
     }
 
-#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT && !os(Android)        // Stream.seek(to:) is an internal API method
+#if NS_FOUNDATION_ALLOWS_TESTABLE_IMPORT        // Stream.seek(to:) is an internal API method
     func test_InputStreamSeekToPosition() {
         let str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue laoreet facilisis. Sed porta tristique orci. Fusce ut nisl dignissim, tempor tortor id, molestie neque. Nam non tincidunt mi. Integer ac diam quis leo aliquam congue et non magna. In porta mauris suscipit erat pulvinar, sed fringilla quam ornare. Nulla vulputate et ligula vitae sollicitudin. Nulla vel vehicula risus. Quisque eu urna ullamcorper, tincidunt ante vitae, aliquet sem. Suspendisse nec turpis placerat, porttitor ex vel, tristique orci. Maecenas pretium, augue non elementum imperdiet, diam ex vestibulum tortor, non ultrices ante enim iaculis ex. Fusce ut nisl dignissim, tempor tortor id, molestie neque. Nam non tincidunt mi. Integer ac diam quis leo aliquam congue et non magna. In porta mauris suscipit erat pulvinar, sed fringilla quam ornare. Nulla vulputate et ligula vitae sollicitudin. Nulla vel vehicula risus. Quisque eu urna ullamcorper, tincidunt ante vitae, aliquet sem. Suspendisse nec turpis placerat, porttitor ex vel, tristique orci. Maecenas pretium, augue non elementum imperdiet, diam ex vestibulum tortor, non ultrices ante enim iaculis ex.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue laoreet facilisis. Sed porta tristique orci. Fusce ut nisl dignissim, tempor tortor id, molestie neque. Nam non tincidunt mi. Integer ac diam quis leo aliquam congue et non magna. In porta mauris suscipit erat pulvinar, sed fringilla quam ornare. Nulla vulputate et ligula vitae sollicitudin. Nulla vel vehicula risus. Quisque eu urna ullamcorper, tincidunt ante vitae, aliquet sem. Suspendisse nec turpis placerat, porttitor ex vel."
         XCTAssert(str.count > 1024) // str.count must be bigger than buffersize inside InputStream.seek func.
