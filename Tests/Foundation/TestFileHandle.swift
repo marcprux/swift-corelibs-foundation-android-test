@@ -21,6 +21,10 @@ import Dispatch
 import WinSDK
 #endif
 
+#if canImport(Android)
+import Android
+#endif
+
 class TestFileHandle : XCTestCase {
     var allHandles: [FileHandle] = []
     var allTemporaryFileURLs: [URL] = []

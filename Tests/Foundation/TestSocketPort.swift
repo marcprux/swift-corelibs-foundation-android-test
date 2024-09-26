@@ -9,6 +9,9 @@
 #if os(Windows)
 import WinSDK
 #endif
+#if canImport(Android)
+import Android
+#endif
 
 class TestPortDelegateWithBlock: NSObject, PortDelegate {
     let block: (PortMessage) -> Void
