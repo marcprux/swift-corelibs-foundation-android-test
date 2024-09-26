@@ -9,6 +9,9 @@
 
 import XCTest
 import Foundation
+#if canImport(Android)
+import Android
+#endif
 
 class TestNSData: XCTestCase {
     
