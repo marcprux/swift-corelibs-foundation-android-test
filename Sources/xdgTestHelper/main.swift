@@ -20,6 +20,12 @@ import FoundationNetworking
 #if os(Windows)
 import WinSDK
 #endif
+#if canImport(Android)
+import Android
+#endif
+#if canImport(Bionic)
+import Bionic
+#endif
 
 enum HelperCheckStatus : Int32 {
     case ok                 = 0

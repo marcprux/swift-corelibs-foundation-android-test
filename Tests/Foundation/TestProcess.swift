@@ -10,6 +10,12 @@
 #if canImport(Synchronization)
 import Synchronization
 #endif
+#if canImport(Android)
+import Android
+#endif
+#if canImport(Bionic)
+import Bionic
+#endif
 
 class TestProcess : XCTestCase {
 #if !os(Android) // some tests here crash on Android
