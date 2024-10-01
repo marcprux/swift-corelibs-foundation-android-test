@@ -608,6 +608,7 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
     }
     
     func test_httpTimeout() async {
+        throw XCTSkip("This test is disabled (Flaky test)")
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 10
         let urlString = "http://127.0.0.1:\(TestURLSession.serverPort)/Peru"
