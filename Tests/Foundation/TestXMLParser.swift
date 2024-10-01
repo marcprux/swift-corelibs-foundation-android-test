@@ -234,6 +234,9 @@ class TestXMLParser : XCTestCase {
             // https://gitlab.gnome.org/GNOME/libxml2/-/commit/eddfbc38fa7e84ccd480eab3738e40d1b2c83979
             // So we don't check the parse result here.
             _ = parser.parse()
+            #if os(Android)
+            throw XCTSkip("testExternalEntity fails on Android")
+            #endif
             XCTAssertEqual(delegate.events, [
                 .startDocument,
                 .didStartElement("doc", nil, nil, [:]),

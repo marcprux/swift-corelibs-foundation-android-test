@@ -528,31 +528,19 @@ class TestURL : XCTestCase {
     func test_URLByResolvingSymlinksInPathShouldRemoveDuplicatedPathSeparators() {
         let url = URL(fileURLWithPath: "//foo///bar////baz/")
         let result = url.resolvingSymlinksInPath()
-        #if swift(<6.0) && os(Android)
-        XCTAssertEqual(result, URL(fileURLWithPath: "/foo/bar/baz"))
-        #else
         XCTAssertEqual(result, URL(fileURLWithPath: "/foo/bar/baz/"))
-        #endif
     }
 
     func test_URLByResolvingSymlinksInPathShouldRemoveSingleDotsBetweenSeparators() {
         let url = URL(fileURLWithPath: "/./foo/./.bar/./baz/./")
         let result = url.resolvingSymlinksInPath()
-        #if swift(<6.0) && os(Android)
-        XCTAssertEqual(result, URL(fileURLWithPath: "/foo/.bar/baz"))
-        #else
         XCTAssertEqual(result, URL(fileURLWithPath: "/foo/.bar/baz/"))
-        #endif
     }
 
     func test_URLByResolvingSymlinksInPathShouldCompressDoubleDotsBetweenSeparators() {
         let url = URL(fileURLWithPath: "/foo/../..bar/../baz/")
         let result = url.resolvingSymlinksInPath()
-        #if swift(<6.0) && os(Android)
-        XCTAssertEqual(result, URL(fileURLWithPath: "/baz"))
-        #else
         XCTAssertEqual(result, URL(fileURLWithPath: "/baz/"))
-        #endif
     }
 
     func test_URLByResolvingSymlinksInPathShouldUseTheCurrentDirectory() throws {
