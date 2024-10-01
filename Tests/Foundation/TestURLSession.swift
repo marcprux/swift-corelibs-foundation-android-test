@@ -607,7 +607,7 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
         waitForExpectations(timeout: 30)
     }
     
-    func test_httpTimeout() async {
+    func test_httpTimeout() async throws {
         throw XCTSkip("This test is disabled (Flaky test)")
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 10
