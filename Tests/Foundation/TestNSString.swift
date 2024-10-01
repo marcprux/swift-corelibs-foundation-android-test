@@ -1050,6 +1050,7 @@ class TestNSString: LoopbackServerTest {
             #if os(Windows)
             XCTAssertEqual(result, ProcessInfo.processInfo.environment["ALLUSERSPROFILE"])
             XCTAssertEqual(result, "/var/empty", "Return copy of receiver if home directory could not be resolved.")
+            #endif
         }
     }
     
