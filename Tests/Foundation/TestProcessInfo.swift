@@ -63,7 +63,11 @@ class TestProcessInfo : XCTestCase {
         let uuid = ProcessInfo.processInfo.globallyUniqueString
         
         let parts = uuid.components(separatedBy: "-")
+        #if swift(>=6.0)
+        XCTAssertEqual(parts.count, 7)
+        #else
         XCTAssertEqual(parts.count, isAndroid ? 5 : 7)
+        #endif
         XCTAssertEqual(parts[0].utf16.count, 8)
         XCTAssertEqual(parts[1].utf16.count, 4)
         XCTAssertEqual(parts[2].utf16.count, 4)

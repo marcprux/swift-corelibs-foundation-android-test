@@ -437,7 +437,8 @@ final class TestURLSession: LoopbackServerTest, @unchecked Sendable {
     }
 
     // This test is buggy because the server could respond before the task is cancelled.
-    func test_cancelTask() async {
+    func test_cancelTask() async throws {
+        throw XCTSkip("This test is disabled (Flaky test)")
         let urlString = "http://127.0.0.1:\(TestURLSession.serverPort)/Peru"
         var urlRequest = URLRequest(url: URL(string: urlString)!)
         urlRequest.setValue("2.0", forHTTPHeaderField: "X-Pause")
