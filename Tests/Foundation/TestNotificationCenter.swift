@@ -231,6 +231,7 @@ class TestNotificationCenter : XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectations(timeout: 1)
+        // bump timeout for Android since the emulator can be slow
+        self.waitForExpectations(timeout: isAndroid ? 10 : 1)
     }
 }
